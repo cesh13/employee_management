@@ -3,7 +3,7 @@ using EmployeeManagementDataAccess.Models;
 
 namespace EmployeeManagementDataAccess.DataAccess
 {
-    internal class EmployeeData : IEmployeeData
+    public class EmployeeData : IEmployeeData
     {
         private readonly IDataAccess _db;
 

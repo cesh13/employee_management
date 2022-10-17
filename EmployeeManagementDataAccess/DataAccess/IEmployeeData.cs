@@ -2,7 +2,7 @@
 
 namespace EmployeeManagementDataAccess.DataAccess
 {
-    internal interface IEmployeeData
+    public interface IEmployeeData
     {
         Task<IEnumerable<EmployeeModel>> GetAllEmployees();
     }

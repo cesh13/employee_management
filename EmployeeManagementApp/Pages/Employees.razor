@@ -1,0 +1,48 @@
+﻿@page "/employees"
+@using EmployeeManagementDataAccess.Models
+
+<h3>Employees</h3>
+@if (employees == null)
+{
+    <h4>Loading...</h4>
+}
+else
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Employee ID</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Phone Number</th>
+                <th>Zip Code</th>
+                <th>Date Hired</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (EmployeeModel employee in employees)
+            {
+                <tr>
+                    <td>
+                        @employee.EmployeeID
+                    </td>
+                    <td>
+                        @employee.FirstName
+                    </td>
+                    <td>
+                        @employee.LastName
+                    </td>
+                    <td>
+                        @employee.Phone
+                    </td>
+                    <td>
+                        @employee.Zip
+                    </td>
+                     <td>
+                        @employee.HireDate
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

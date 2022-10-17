@@ -5,7 +5,7 @@ using System.Data;
 
 namespace EmployeeManagementDataAccess.DataConnection;
 
-class SqlDataAccess : IDataAccess
+public class SqlDataAccess : IDataAccess
 {
     private readonly IConfiguration _config;
     private string _connectionId;

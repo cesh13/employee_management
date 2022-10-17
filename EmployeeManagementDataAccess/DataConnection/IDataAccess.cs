@@ -1,6 +1,6 @@
 ﻿namespace EmployeeManagementDataAccess.DataConnection
 {
-    interface IDataAccess
+    public interface IDataAccess
     {
         Task<IEnumerable<T>> RetrieveMultiple<T, U>(string sql, U parameters);
         Task<T> RetrieveOne<T, U>(string sql, U parameters);

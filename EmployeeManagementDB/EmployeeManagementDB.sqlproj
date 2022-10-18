@@ -64,6 +64,9 @@
     <Build Include="dbo\Tables\Employee.sql" />
     <Build Include="dbo\StoredProcedures\spEmployee_GetAll.sql" />
     <Build Include="dbo\StoredProcedures\spEmployee_GetOne.sql" />
+    <Build Include="dbo\StoredProcedures\spEmployee_Create.sql" />
+    <Build Include="dbo\StoredProcedures\spEmployee_Delete.sql" />
+    <Build Include="dbo\StoredProcedures\spEmployee_Update.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="EmployeeManagementDB.refactorlog" />

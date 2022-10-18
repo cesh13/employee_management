@@ -1,43 +1,119 @@
-﻿@page "/employee"
+﻿@page "/employee/{employeeID:int}"
+@page "/employee"
+
+@using EmployeeManagementApp.Models
+@using EmployeeManagementDataAccess.DataAccess
 @using EmployeeManagementDataAccess.Models
+
+@inject IEmployeeData _employeeData;
+@inject NavigationManager NavigationManager
+
+
 <h3>New Employee</h3>
-<EditForm Model="@employee" OnValidSubmit="@onEmployeeSubmit" class="mt-5">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <label>
-        First Name:
-        <InputText class="form-control" id="firstName" @bind-Value="employee.FirstName"></InputText>
-    </label>
-    <label>
-        Last Name:
-        <InputText class="form-control" id="lastName" @bind-Value="employee.LastName"></InputText>
-    </label>
-    <label>
-        Phone:
-        <InputText class="form-control" id="phone" @bind-Value="employee.Phone"></InputText>
-    </label>
-    <label>
-        Zip:
-        <InputText class="form-control" id="zip" @bind-Value="employee.Zip"></InputText>
-    </label>
-    <label>
-        Zip:
-        <InputDate class="form-control" id="zip" @bind-Value="employee.HireDate"></InputDate>
-    </label>
-</EditForm>
+
+@if (displayEmployee == null)
+{
+    <h4>Loading...</h4>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-4 mt-5">
+            <EditForm Model="@displayEmployee" OnValidSubmit="@onEmployeeSubmit">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+                <div class="mb-3">
+                    <label class="">
+                        First Name:
+                    </label>
+                    <InputText class="form-control" id="firstName" @bind-Value="displayEmployee.FirstName"></InputText>
+                </div>
+                <div class="mb-3">
+                    <label class="">
+                        Last Name:
+                    </label>
+                    <InputText class="form-control" id="lastName" @bind-Value="displayEmployee.LastName"></InputText>
+                </div>
+                <div class="mb-3">
+                    <label class="">
+                        Phone <small>Expected format: (XXX) XXX-XXXX</small>
+                    </label>
+                    <InputText class="form-control" id="phone" @bind-Value="displayEmployee.Phone"></InputText>
+                </div>
+                <div class="mb-3">
+                    <label class="">
+                        Zip:
+                    </label>
+                    <InputText class="form-control" id="zip" @bind-Value="displayEmployee.Zip"></InputText>
+                </div>
+                <div class="mb-3">
+                    <label class="">
+                        Hire date:
+                    </label>
+                    <InputDate class="form-control" id="hiredate" @bind-Value="displayEmployee.HireDate"></InputDate>
+                </div>
+
+                <button type="submit" class="btn btn-primary mt-3 form-control">@buttonActionText</button>
+
+            </EditForm>
+        </div>
+    </div>
+}
 
 @code {
-    public EmployeeModel employee;
+    [Parameter]
+    public int employeeID { get; set; }
+
+    private EmployeeDisplayModel displayEmployee;
+    private string buttonActionText = "";
 
     protected override async Task OnInitializedAsync()
     {
-        employee = new EmployeeModel();
+        if (employeeID != 0)
+        {
+            buttonActionText = "Update Employee";
+            var employee = await _employeeData.GetEmployeeById(employeeID);
+            displayEmployee = new EmployeeDisplayModel
+                {
+                    EmployeeID = employee.EmployeeID,
+                    FirstName = employee.FirstName,
+                    LastName = employee.LastName,
+                    Phone = employee.Phone,
+                    Zip = employee.Zip,
+                    HireDate = employee.HireDate
+                };
+        }
+        else
+        {
+            buttonActionText = "Create Employee";
+            displayEmployee = new EmployeeDisplayModel();
+            displayEmployee.HireDate = DateTime.Now;
+        }
 
     }
 
-    public void onEmployeeSubmit()
+    public async void onEmployeeSubmit()
     {
-        //do something
-        var hi = "ho";
+        //Mapping display entity to data access library model
+        //We could use automapper here, but seemed too much for the simplicity of this example project
+        EmployeeModel employee = new EmployeeModel
+            {
+                EmployeeID = employeeID,
+                FirstName = displayEmployee.FirstName,
+                LastName = displayEmployee.LastName,
+                Phone = displayEmployee.Phone,
+                Zip = displayEmployee.Zip,
+                HireDate = displayEmployee.HireDate
+            };
+        if (employeeID == 0)
+        {
+            await _employeeData.CreateEmployee(employee);
+        }
+        else
+        {
+            await _employeeData.UpdateEmployee(employee);
+        }
+
+        NavigationManager.NavigateTo("/employees");
     }
 }

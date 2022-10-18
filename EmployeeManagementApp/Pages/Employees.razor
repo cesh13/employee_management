@@ -1,6 +1,9 @@
 ﻿@page "/"
 @page "/employees"
+@using EmployeeManagementDataAccess.DataAccess
 @using EmployeeManagementDataAccess.Models
+
+@inject IEmployeeData _employeeData;
 
 <h3>Employees</h3>
 
@@ -10,7 +13,7 @@
 }
 else
 {
-    <a class="btn btn-primary mt-5 mb-2" href="/employee">Add Employee</a>
+    <a class="btn btn-primary mt-5 mb-4" href="/employee">Add Employee</a>
     <table class="table">
         <thead>
             <tr>
@@ -41,11 +44,33 @@ else
                     <td>
                         @employee.Zip
                     </td>
-                     <td>
-                        @employee.HireDate
+                    <td>
+                        @employee.HireDate.ToString()
+                    </td>
+                    <td>
+                        <button @onclick="(() => removeEmployeeHandler(employee.EmployeeID))" class="btn btn-outline-danger"><i class="oi oi-trash" aria-hidden="true"></i></button>
+                        <a href="/employee/@employee.EmployeeID" class="btn btn-outline-primary"><i class="oi oi-pencil" aria-hidden="true"></i></a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
+}
+
+@code {
+
+    public List<EmployeeModel> employees { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        employees = (await _employeeData.GetAllEmployees()).ToList();
+
+    }
+
+    private async Task removeEmployeeHandler(int employeeID)
+    {
+        await _employeeData.DeleteEmployee(employeeID);
+        employees = (await _employeeData.GetAllEmployees()).ToList();
+        StateHasChanged();
+    }
 }

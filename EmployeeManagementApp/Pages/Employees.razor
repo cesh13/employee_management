@@ -14,6 +14,15 @@
 else
 {
     <a class="btn btn-primary mt-5 mb-4" href="/employee">Add Employee</a>
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <input type="text" class="form-control" @bind="searchText" placeholder="Search by Last Name or Phone Number">
+            
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-outline-primary" onclick="@searchHandler">Search</button>
+        </div>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -60,6 +69,8 @@ else
 @code {
 
     public List<EmployeeModel> employees { get; set; }
+    
+    public string? searchText;
 
     protected override async Task OnInitializedAsync()
     {
@@ -71,6 +82,13 @@ else
     {
         await _employeeData.DeleteEmployee(employeeID);
         employees = (await _employeeData.GetAllEmployees()).ToList();
+        StateHasChanged();
+    }
+
+    private async Task searchHandler()
+    {
+        employees = (await _employeeData.SearchEmployees(searchText)).ToList();
+        //employees = (await _employeeData.GetAllEmployees()).ToList();
         StateHasChanged();
     }
 }

@@ -5,9 +5,10 @@ namespace EmployeeManagementDataAccess.DataAccess
     public interface IEmployeeData
     {
         Task<IEnumerable<EmployeeModel>> GetAllEmployees();
+        Task<IEnumerable<EmployeeModel>> SearchEmployees(string searchText);
         Task CreateEmployee(EmployeeModel employee);
         Task DeleteEmployee(int employeeId);
         Task<EmployeeModel> GetEmployeeById(int employeeId);
-        public Task UpdateEmployee(EmployeeModel employee);
+        Task UpdateEmployee(EmployeeModel employee);
     }
 }

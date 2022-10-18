@@ -17,6 +17,11 @@ namespace EmployeeManagementDataAccess.DataAccess
             return _db.RetrieveMultiple<EmployeeModel, dynamic>("dbo.spEmployee_GetAll", new { });
         }
 
+        public Task<IEnumerable<EmployeeModel>> SearchEmployees(string searchText)
+        {
+            return _db.RetrieveMultiple<EmployeeModel, dynamic>("dbo.spEmployee_Search", new { searchText });
+        }
+
         public Task CreateEmployee(EmployeeModel employee)
         {
             return _db.Execute("dbo.spEmployee_Create",

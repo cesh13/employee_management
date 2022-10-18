@@ -1,14 +1,17 @@
-﻿@page "/employees"
+﻿@page "/"
+@page "/employees"
 @using EmployeeManagementDataAccess.Models
 
 <h3>Employees</h3>
+
 @if (employees == null)
 {
     <h4>Loading...</h4>
 }
 else
 {
-    <table>
+    <a class="btn btn-primary mt-5 mb-2" href="/employee">Add Employee</a>
+    <table class="table">
         <thead>
             <tr>
                 <th>Employee ID</th>

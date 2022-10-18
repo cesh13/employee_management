@@ -1,0 +1,43 @@
+﻿@page "/employee"
+@using EmployeeManagementDataAccess.Models
+<h3>New Employee</h3>
+<EditForm Model="@employee" OnValidSubmit="@onEmployeeSubmit" class="mt-5">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <label>
+        First Name:
+        <InputText class="form-control" id="firstName" @bind-Value="employee.FirstName"></InputText>
+    </label>
+    <label>
+        Last Name:
+        <InputText class="form-control" id="lastName" @bind-Value="employee.LastName"></InputText>
+    </label>
+    <label>
+        Phone:
+        <InputText class="form-control" id="phone" @bind-Value="employee.Phone"></InputText>
+    </label>
+    <label>
+        Zip:
+        <InputText class="form-control" id="zip" @bind-Value="employee.Zip"></InputText>
+    </label>
+    <label>
+        Zip:
+        <InputDate class="form-control" id="zip" @bind-Value="employee.HireDate"></InputDate>
+    </label>
+</EditForm>
+
+@code {
+    public EmployeeModel employee;
+
+    protected override async Task OnInitializedAsync()
+    {
+        employee = new EmployeeModel();
+
+    }
+
+    public void onEmployeeSubmit()
+    {
+        //do something
+        var hi = "ho";
+    }
+}

@@ -15,6 +15,6 @@ namespace EmployeeManagementApp.Pages
         {
             employees = (await _employeeData.GetAllEmployees()).ToList();
 
-}
+        }
     }
 }

@@ -3,6 +3,9 @@ using EmployeeManagementDataAccess.Models;
 
 namespace EmployeeManagementDataAccess.DataAccess
 {
+    /// <summary>
+    /// Implement data access functionality for employee entity
+    /// </summary>
     public class EmployeeData : IEmployeeData
     {
         private readonly IDataAccess _db;

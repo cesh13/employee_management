@@ -4,7 +4,11 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 
 namespace EmployeeManagementDataAccess.DataConnection;
+// I used dapper as a micro ORM to simplify db requests
 
+/// <summary>
+/// Sql specific data access implementation
+/// </summary>
 public class SqlDataAccess : IDataAccess
 {
     private readonly IConfiguration _config;

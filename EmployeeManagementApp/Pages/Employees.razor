@@ -16,11 +16,11 @@ else
     <a class="btn btn-primary mt-5 mb-4" href="/employee">Add Employee</a>
     <div class="row mb-4">
         <div class="col-md-4">
-            <input type="text" class="form-control" @bind="searchText" placeholder="Search by Last Name or Phone Number">
+            <input type="text" class="form-control" @bind="searchText" placeholder="Search by last name or phone number">
             
         </div>
         <div class="col-md-2">
-            <button class="btn btn-outline-primary" onclick="@searchHandler">Search</button>
+            <button class="btn btn-outline-primary" @onclick="searchHandler">Search</button>
         </div>
     </div>
     <table class="table">
@@ -31,7 +31,7 @@ else
                 <th>Last Name</th>
                 <th>Phone Number</th>
                 <th>Zip Code</th>
-                <th>Date Hired</th>
+                <th><button @onclick="sortByDate" class="btn btn-outline-dark">Date Hired @if(hireDateSort == order.asc){ <i class="oi oi-arrow-bottom"></i>} else{<i class="oi oi-arrow-top"></i>}  </button></th>
             </tr>
         </thead>
         <tbody>
@@ -54,7 +54,7 @@ else
                         @employee.Zip
                     </td>
                     <td>
-                        @employee.HireDate.ToString()
+                        @employee.HireDate.ToString("MM/dd/yyyy")
                     </td>
                     <td>
                         <button @onclick="(() => removeEmployeeHandler(employee.EmployeeID))" class="btn btn-outline-danger"><i class="oi oi-trash" aria-hidden="true"></i></button>
@@ -67,10 +67,11 @@ else
 }
 
 @code {
+    public List<EmployeeModel> employees;
 
-    public List<EmployeeModel> employees { get; set; }
-    
     public string? searchText;
+
+    order hireDateSort = order.asc;
 
     protected override async Task OnInitializedAsync()
     {
@@ -88,7 +89,25 @@ else
     private async Task searchHandler()
     {
         employees = (await _employeeData.SearchEmployees(searchText)).ToList();
-        //employees = (await _employeeData.GetAllEmployees()).ToList();
         StateHasChanged();
+    }
+
+    private void sortByDate()
+    {
+        if(hireDateSort == order.asc){
+            employees = employees.OrderBy(x => x.HireDate).ToList();
+            hireDateSort = order.desc;
+        }
+        else
+        {
+            employees = employees.OrderByDescending(x => x.HireDate).ToList();
+            hireDateSort = order.asc;
+        } 
+
+    }
+
+    enum order {
+        asc,
+        desc
     }
 }
